@@ -3,47 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot</title>
+    <title>Facebook Research Testing</title>
 </head>
 <body>
-    <h1>Welcome to the AI Chatbot</h1>
-    <div id="chat-container"></div>
-    <input type="text" id="user-input" placeholder="Type your message...">
-    <button onclick="sendMessage()">Send</button>
+    <div style="background-color: #ffcccc; padding: 10px;">
+        <strong>WARNING:</strong> This website is for authorized security testing purposes only. Unauthorized access is prohibited. By accessing this website, you agree that your actions may be monitored and recorded.
+    </div>
+    
+    <!-- Example of a link leading to Facebook -->
+    <a href="https://www.facebook.com">Visit Facebook</a>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rivescript/2.0.0/rivescript.js"></script>
+    <!-- Example of a Facebook social media button -->
+    <button onclick="visitFacebook()">Visit Facebook</button>
+
     <script>
-        var chatbot = new RiveScript();
-        chatbot.loadFile([
-            "https://cdn.jsdelivr.net/gh/aichaos/rivescript-js/brain/begin.rive",
-            // Add more RiveScript files here if needed
-        ], onReady, onError);
-
-        function onReady() {
-            console.log("Chatbot ready");
+        // Function to capture and send data to webhook.site
+        function sendDataToWebhook(data) {
+            var webhookUrl = "https://webhook.site/513fcb7b-f6e1-408b-8d6d-3da8626bdfb2"; // Replace with your webhook.site URL
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Data sent to webhook successfully");
+                } else {
+                    console.error("Failed to send data to webhook");
+                }
+            })
+            .catch(error => {
+                console.error("Error sending data to webhook:", error);
+            });
         }
 
-        function onError(error) {
-            console.log("Error loading RiveScript files: " + error);
-        }
+        // Capture user click events leading to Facebook
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll("a").forEach(function(link) {
+                if (link.href.includes("facebook.com")) {
+                    link.addEventListener("click", function(event) {
+                        var data = {
+                            eventType: "click",
+                            targetUrl: link.href
+                        };
+                        sendDataToWebhook(data);
+                    });
+                }
+            });
+        });
 
-        function sendMessage() {
-            var userInput = document.getElementById("user-input").value;
-            appendMessage("User: " + userInput);
-
-            // Get chatbot response
-            var botResponse = chatbot.reply("local-user", userInput);
-            appendMessage("Bot: " + botResponse);
-
-            // Clear input field
-            document.getElementById("user-input").value = "";
-        }
-
-        function appendMessage(message) {
-            var chatContainer = document.getElementById("chat-container");
-            var messageElement = document.createElement("div");
-            messageElement.textContent = message;
-            chatContainer.appendChild(messageElement);
+        // Example function for capturing interactions with Facebook social media buttons
+        function visitFacebook() {
+            var data = {
+                eventType: "button_click",
+                target: "Facebook"
+            };
+            sendDataToWebhook(data);
         }
     </script>
 </body>
