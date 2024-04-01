@@ -11,14 +11,29 @@
     <input type="text" id="user-input" placeholder="Type your message...">
     <button onclick="sendMessage()">Send</button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rivescript/2.0.0/rivescript.js"></script>
     <script>
+        var chatbot = new RiveScript();
+        chatbot.loadFile([
+            "https://cdn.jsdelivr.net/gh/aichaos/rivescript-js/brain/begin.rive",
+            // Add more RiveScript files here if needed
+        ], onReady, onError);
+
+        function onReady() {
+            console.log("Chatbot ready");
+        }
+
+        function onError(error) {
+            console.log("Error loading RiveScript files: " + error);
+        }
+
         function sendMessage() {
             var userInput = document.getElementById("user-input").value;
             appendMessage("User: " + userInput);
 
-            // Call AI service (simple JavaScript-based AI)
-            var aiResponse = getAIResponse(userInput);
-            appendMessage("AI: " + aiResponse);
+            // Get chatbot response
+            var botResponse = chatbot.reply("local-user", userInput);
+            appendMessage("Bot: " + botResponse);
 
             // Clear input field
             document.getElementById("user-input").value = "";
@@ -29,17 +44,6 @@
             var messageElement = document.createElement("div");
             messageElement.textContent = message;
             chatContainer.appendChild(messageElement);
-        }
-
-        function getAIResponse(input) {
-            // Simple JavaScript-based AI
-            if (input.toLowerCase().includes("hello")) {
-                return "Hello! How can I assist you?";
-            } else if (input.toLowerCase().includes("how are you")) {
-                return "I'm just a computer program, but thanks for asking!";
-            } else {
-                return "I'm sorry, I don't understand.";
-            }
         }
     </script>
 </body>
